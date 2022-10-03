@@ -54,7 +54,8 @@ public:
 	virtual IMediaCache& GetCache() override;
 	virtual IMediaControls& GetControls() override;
 	virtual FString GetInfo() const override;
-	virtual FName GetPlayerName() const override;
+	virtual FGuid GetPlayerPluginGUID() const override;
+	virtual FName GetPlayerName() const;
 	virtual IMediaSamples& GetSamples() override;
 	virtual FString GetStats() const override;
 	virtual IMediaTracks& GetTracks() override;

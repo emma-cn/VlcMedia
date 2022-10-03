@@ -35,6 +35,11 @@ class FVlcMediaFactoryModule
 {
 public:
 
+	/** Default constructor. */
+	FVlcMediaFactoryModule() { }
+
+public:
+
 	//~ IMediaPlayerFactory interface
 
 	virtual bool CanPlayUrl(const FString& Url, const IMediaOptions* Options, TArray<FText>* OutWarnings, TArray<FText>* OutErrors) const override
@@ -106,6 +111,12 @@ public:
 	{
 		static FName PlayerName(TEXT("VlcMedia"));
 		return PlayerName;
+	}
+
+	virtual FGuid GetPlayerPluginGUID() const override
+	{
+		static FGuid PlayerPluginGUID(0x82f2a4c0, 0x225448c6, 0x853ff0a3, 0x0a2b08b7);
+		return PlayerPluginGUID;
 	}
 
 	virtual const TArray<FString>& GetSupportedPlatforms() const override
@@ -341,6 +352,18 @@ public:
 	}
 
 private:
+	void AddSupportedPlatform(const FGuid& PlatformGuid)
+	{
+		auto MediaModule = FModuleManager::GetModulePtr<IMediaModule>("Media");
+		if (MediaModule)
+		{
+			FName PlatformName = MediaModule->GetPlatformName(PlatformGuid);
+			if (!PlatformName.IsNone())
+			{
+				SupportedPlatforms.Add(PlatformName.ToString());
+			}
+		}
+	}
 
 	/** List of supported media file types. */
 	TArray<FString> SupportedFileExtensions;
